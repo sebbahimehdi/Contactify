@@ -1,467 +1,421 @@
 @model ContactManagerPro.Models.Contact
 
 @{
-    ViewData["Title"] = "Détails Contact";
+    ViewData["Title"] = "Contact Details";
 }
 
 <style>
-    .details-container {
-        max-width: 700px;
+    .detail-page {
+        max-width: 1000px;
         margin: 0 auto;
     }
 
-    .details-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 40px 20px;
-        border-radius: 12px 12px 0 0;
-        text-align: center;
+    .detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-2xl);
+        gap: var(--spacing-lg);
     }
 
-    .details-header h1 {
-        margin: 0;
+    .detail-title {
         font-size: 28px;
-        font-weight: 700;
+        font-weight: 600;
+        color: var(--gray-900);
     }
 
-    .details-header p {
-        margin: 8px 0 0 0;
-        font-size: 14px;
-        opacity: 0.9;
+    .detail-actions {
+        display: flex;
+        gap: var(--spacing-md);
     }
 
-    .details-card {
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: var(--spacing-xl);
+    }
+
+    .profile-card {
         background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-
-    .details-body {
-        padding: 40px;
-    }
-
-    .profile-section {
+        border: 1px solid var(--gray-200);
+        border-radius: 8px;
+        padding: var(--spacing-2xl);
+        box-shadow: var(--shadow-sm);
         text-align: center;
-        margin-bottom: 40px;
-        padding-bottom: 30px;
-        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .profile-avatar-section {
+        margin-bottom: var(--spacing-xl);
+        padding-bottom: var(--spacing-xl);
+        border-bottom: 1px solid var(--gray-200);
     }
 
     .profile-avatar {
-        width: 140px;
-        height: 140px;
-        border-radius: 50%;
-        border: 5px solid #667eea;
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 48px;
+        margin: 0 auto var(--spacing-lg);
+        overflow: hidden;
+    }
+
+    .profile-avatar img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
-        margin: 0 auto 20px;
-        display: block;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     }
 
     .profile-name {
-        font-size: 28px;
-        font-weight: 700;
-        color: #212529;
-        margin-bottom: 5px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: var(--spacing-sm);
     }
 
     .profile-title {
-        font-size: 16px;
-        color: #667eea;
-        font-weight: 600;
-        margin-bottom: 3px;
+        color: var(--primary);
+        font-weight: 500;
+        margin-bottom: var(--spacing-xs);
     }
 
     .profile-company {
-        font-size: 14px;
-        color: #6c757d;
-        margin-bottom: 15px;
+        color: var(--gray-500);
+        font-size: 13px;
     }
 
-    .favorite-indicator {
-        display: inline-block;
-        background: #ffc107;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
+    .profile-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-lg);
+        padding-top: var(--spacing-lg);
+        border-top: 1px solid var(--gray-200);
+    }
+
+    .profile-stat {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 18px;
         font-weight: 600;
+        color: var(--gray-900);
     }
 
-    .info-section {
-        margin-bottom: 30px;
-    }
-
-    .info-section-title {
-        font-size: 14px;
-        font-weight: 700;
-        color: #667eea;
+    .stat-label {
+        font-size: 12px;
+        color: var(--gray-500);
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 15px;
+    }
+
+    .detail-content {
         display: flex;
-        align-items: center;
-        gap: 8px;
+        flex-direction: column;
+        gap: var(--spacing-xl);
+    }
+
+    .info-card {
+        background: white;
+        border: 1px solid var(--gray-200);
+        border-radius: 8px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .info-card-header {
+        padding: var(--spacing-lg);
+        border-bottom: 1px solid var(--gray-200);
+        background-color: var(--gray-50);
+        font-weight: 600;
+        color: var(--gray-900);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-card-body {
+        padding: var(--spacing-lg);
     }
 
     .info-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
     }
 
     .info-item {
-        background: #f9fafb;
-        padding: 15px;
-        border-radius: 8px;
-        border-left: 3px solid #667eea;
+        display: flex;
+        flex-direction: column;
     }
 
     .info-label {
         font-size: 12px;
-        font-weight: 700;
-        color: #667eea;
+        color: var(--gray-500);
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 6px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
+        margin-bottom: var(--spacing-sm);
+        font-weight: 600;
     }
 
     .info-value {
-        font-size: 15px;
-        color: #212529;
-        font-weight: 600;
+        font-size: 14px;
+        color: var(--gray-900);
+        font-weight: 500;
     }
 
     .info-value.empty {
-        color: #9ca3af;
-        font-weight: 400;
+        color: var(--gray-400);
+        font-style: italic;
+    }
+
+    .info-value a {
+        color: var(--primary);
+        text-decoration: none;
+    }
+
+    .info-value a:hover {
+        text-decoration: underline;
     }
 
     .notes-section {
-        background: #f0f4ff;
-        border: 1px solid #c7d2fe;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 30px;
+        padding: var(--spacing-lg);
+        background-color: var(--gray-50);
     }
 
-    .notes-title {
-        font-size: 12px;
-        font-weight: 700;
-        color: #4338ca;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
-    }
-
-    .notes-content {
-        color: #212529;
-        font-size: 14px;
+    .notes-text {
+        color: var(--gray-700);
         line-height: 1.6;
-        word-break: break-word;
+        white-space: pre-wrap;
+        word-wrap: break-word;
     }
 
-    .metadata-section {
-        background: #ecfdf5;
-        border: 1px solid #a7f3d0;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 30px;
-    }
-
-    .metadata-item {
+    .detail-footer {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-        font-size: 13px;
-        color: #047857;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-2xl);
     }
 
-    .metadata-item:last-child {
-        margin-bottom: 0;
-    }
-
-    .metadata-label {
-        font-weight: 600;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 12px;
-        padding-top: 30px;
-        border-top: 1px solid #e5e7eb;
-    }
-
-    .btn-action {
-        padding: 12px 24px;
-        border-radius: 6px;
-        border: none;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+    .detail-footer .btn {
         flex: 1;
         justify-content: center;
     }
 
-    .btn-edit {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-    }
-
-    .btn-edit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
-    }
-
-    .btn-back {
-        background: #e5e7eb;
-        color: #4b5563;
-    }
-
-    .btn-back:hover {
-        background: #d1d5db;
-        color: #4b5563;
-    }
-
-    .btn-delete {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-    }
-
-    .btn-delete:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-    }
-
-    .empty-value {
-        color: #9ca3af;
-        font-style: italic;
-    }
-
     @@media (max-width: 768px) {
-        .details-body {
-            padding: 20px;
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .detail-actions {
+            width: 100%;
+            flex-wrap: wrap;
         }
 
         .info-grid {
             grid-template-columns: 1fr;
         }
 
-        .action-buttons {
+        .detail-footer {
             flex-direction: column;
         }
 
-        .btn-action {
-            flex: unset;
-            width: 100%;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-        }
-
-        .profile-name {
-            font-size: 22px;
+        .detail-footer .btn {
+            flex: none;
         }
     }
 </style>
 
-<!-- Details Header -->
-<div class="details-header">
-    <h1><i class="bi bi-person-card"></i> Détails du Contact</h1>
-    <p>Consultez toutes les informations du contact</p>
-</div>
+<div class="detail-page">
+    <!-- Header -->
+    <div class="detail-header">
+        <h1 class="detail-title">@Model.Prenom @Model.Nom</h1>
+        <div class="detail-actions">
+            <a href="@Url.Action("Edit", "Contacts", new { id = Model.Id })" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a href="@Url.Action("Delete", "Contacts", new { id = Model.Id })" class="btn btn-secondary" 
+               onclick="return confirm('Are you sure you want to delete this contact?')">
+                <i class="bi bi-trash"></i> Delete
+            </a>
+            <a href="@Url.Action("Index", "Contacts")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
 
-<!-- Details Card -->
-<div class="details-container">
-    <div class="details-card">
-        <div class="details-body">
-            <!-- Profile Section -->
-            <div class="profile-section">
-                <img src="@(string.IsNullOrEmpty(Model.PhotoUrl) ? 
-                    "https://via.placeholder.com/140?text=" + Uri.EscapeDataString(Model.Prenom.FirstOrDefault().ToString()) 
-                    : Model.PhotoUrl)"
-                     class="profile-avatar" 
-                     alt="@Model.Prenom" />
-                <h2 class="profile-name">@Model.Prenom @Model.Nom</h2>
+    <!-- Main Grid -->
+    <div class="detail-grid">
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <div class="profile-avatar-section">
+                <div class="profile-avatar">
+                    @Model.Prenom.First().ToString().ToUpper()
+                </div>
+                <div class="profile-name">@Model.Prenom @Model.Nom</div>
                 @if (!string.IsNullOrEmpty(Model.Profession))
                 {
-                    <p class="profile-title">@Model.Profession</p>
+                    <div class="profile-title">@Model.Profession</div>
                 }
                 @if (!string.IsNullOrEmpty(Model.Entreprise))
                 {
-                    <p class="profile-company">
-                        <i class="bi bi-building"></i> @Model.Entreprise
-                    </p>
-                }
-                @if (Model.Favori)
-                {
-                    <span class="favorite-indicator">
-                        <i class="bi bi-star-fill"></i> Favori
-                    </span>
+                    <div class="profile-company">@Model.Entreprise</div>
                 }
             </div>
 
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <div class="stat-value">
+                        @if (Model.Favori)
+                        {
+                            <i class="bi bi-star-fill" style="color: var(--warning);"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-star" style="color: var(--gray-400);"></i>
+                        }
+                    </div>
+                    <div class="stat-label">Favorite</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value">@Model.DateCreation.ToString("MMM dd")</div>
+                    <div class="stat-label">Added</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details -->
+        <div class="detail-content">
             <!-- Contact Information -->
-            <div class="info-section">
-                <h3 class="info-section-title">
-                    <i class="bi bi-envelope"></i> Coordonnées
-                </h3>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">
-                            <i class="bi bi-envelope"></i> Email
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-envelope"></i> Contact Information
+                </div>
+                <div class="info-card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Email</span>
+                            <a href="mailto:@Model.Email" class="info-value">@Model.Email</a>
                         </div>
-                        <div class="info-value">
-                            <a href="mailto:@Model.Email" style="color: #667eea; text-decoration: none;">
-                                @Model.Email
-                            </a>
+                        <div class="info-item">
+                            <span class="info-label">Phone</span>
+                            <span class="info-value @(string.IsNullOrEmpty(Model.Telephone) ? "empty" : "")">
+                                @if (!string.IsNullOrEmpty(Model.Telephone))
+                                {
+                                    <a href="tel:@Model.Telephone">@Model.Telephone</a>
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </span>
                         </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">
-                            <i class="bi bi-telephone"></i> Téléphone
+                        <div class="info-item">
+                            <span class="info-label">Address</span>
+                            <span class="info-value @(string.IsNullOrEmpty(Model.Adresse) ? "empty" : "")">
+                                @if (!string.IsNullOrEmpty(Model.Adresse))
+                                {
+                                    @Model.Adresse
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </span>
                         </div>
-                        <div class="info-value @(string.IsNullOrEmpty(Model.Telephone) ? "empty" : "")">
-                            @if (!string.IsNullOrEmpty(Model.Telephone))
-                            {
-                                <a href="tel:@Model.Telephone" style="color: #212529; text-decoration: none;">
-                                    @Model.Telephone
-                                </a>
-                            }
-                            else
-                            {
-                                <span class="empty-value">Non renseigné</span>
-                            }
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">
-                            <i class="bi bi-geo-alt"></i> Ville
-                        </div>
-                        <div class="info-value @(string.IsNullOrEmpty(Model.Ville) ? "empty" : "")">
-                            @if (!string.IsNullOrEmpty(Model.Ville))
-                            {
-                                @Model.Ville
-                            }
-                            else
-                            {
-                                <span class="empty-value">Non renseignée</span>
-                            }
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">
-                            <i class="bi bi-house"></i> Adresse
-                        </div>
-                        <div class="info-value @(string.IsNullOrEmpty(Model.Adresse) ? "empty" : "")">
-                            @if (!string.IsNullOrEmpty(Model.Adresse))
-                            {
-                                @Model.Adresse
-                            }
-                            else
-                            {
-                                <span class="empty-value">Non renseignée</span>
-                            }
+                        <div class="info-item">
+                            <span class="info-label">City</span>
+                            <span class="info-value @(string.IsNullOrEmpty(Model.Ville) ? "empty" : "")">
+                                @if (!string.IsNullOrEmpty(Model.Ville))
+                                {
+                                    @Model.Ville
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Professional Information -->
-            <div class="info-section">
-                <h3 class="info-section-title">
-                    <i class="bi bi-briefcase"></i> Informations Professionnelles
-                </h3>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">
-                            <i class="bi bi-building"></i> Entreprise
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-briefcase"></i> Professional Information
+                </div>
+                <div class="info-card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Company</span>
+                            <span class="info-value @(string.IsNullOrEmpty(Model.Entreprise) ? "empty" : "")">
+                                @if (!string.IsNullOrEmpty(Model.Entreprise))
+                                {
+                                    @Model.Entreprise
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </span>
                         </div>
-                        <div class="info-value @(string.IsNullOrEmpty(Model.Entreprise) ? "empty" : "")">
-                            @if (!string.IsNullOrEmpty(Model.Entreprise))
-                            {
-                                @Model.Entreprise
-                            }
-                            else
-                            {
-                                <span class="empty-value">Non renseignée</span>
-                            }
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">
-                            <i class="bi bi-person-badge"></i> Profession
-                        </div>
-                        <div class="info-value @(string.IsNullOrEmpty(Model.Profession) ? "empty" : "")">
-                            @if (!string.IsNullOrEmpty(Model.Profession))
-                            {
-                                @Model.Profession
-                            }
-                            else
-                            {
-                                <span class="empty-value">Non renseignée</span>
-                            }
+                        <div class="info-item">
+                            <span class="info-label">Job Title</span>
+                            <span class="info-value @(string.IsNullOrEmpty(Model.Profession) ? "empty" : "")">
+                                @if (!string.IsNullOrEmpty(Model.Profession))
+                                {
+                                    @Model.Profession
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Notes Section -->
+            <!-- Notes -->
             @if (!string.IsNullOrEmpty(Model.Notes))
             {
-                <div class="notes-section">
-                    <div class="notes-title">
+                <div class="info-card">
+                    <div class="info-card-header">
                         <i class="bi bi-sticky"></i> Notes
                     </div>
-                    <div class="notes-content">
-                        @Model.Notes
+                    <div class="info-card-body">
+                        <div class="notes-section">
+                            <div class="notes-text">@Model.Notes</div>
+                        </div>
                     </div>
                 </div>
             }
-
-            <!-- Metadata Section -->
-            <div class="metadata-section">
-                <div class="metadata-item">
-                    <span class="metadata-label"><i class="bi bi-calendar-event"></i> Date de création:</span>
-                    <span>@Model.DateCreation.ToString("dd/MM/yyyy à HH:mm")</span>
-                </div>
-                <div class="metadata-item">
-                    <span class="metadata-label"><i class="bi bi-check-circle"></i> Statut:</span>
-                    <span>@(Model.Favori ? "Favori ⭐" : "Actif")</span>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn-action btn-edit">
-                    <i class="bi bi-pencil-square"></i> Modifier
-                </a>
-                <a asp-action="Index" class="btn-action btn-back">
-                    <i class="bi bi-arrow-left"></i> Retour
-                </a>
-                <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn-action btn-delete" 
-                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce contact?')">
-                    <i class="bi bi-trash"></i> Supprimer
-                </a>
-            </div>
         </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="detail-footer">
+        <a href="@Url.Action("Edit", "Contacts", new { id = Model.Id })" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Edit Contact
+        </a>
+        <a href="@Url.Action("Index", "Contacts")" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Contacts
+        </a>
     </div>
 </div>
 
 @section Scripts {
     <script>
-        // Show toast notification
         @if (TempData["SuccessMessage"] != null)
         {
             <text>
@@ -470,3 +424,4 @@
         }
     </script>
 }
+

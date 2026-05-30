@@ -3,310 +3,95 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Contact Manager Pro</title>
+    <title>@ViewData["Title"] - Contactify</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/crm-system.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ContactManagerPro.styles.css" asp-append-version="true" />
-    <style>
-        :root {
-            --primary-color: #667eea;
-            --primary-dark: #5568d3;
-            --secondary-color: #764ba2;
-            --accent-color: #f093fb;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --light-bg: #f9fafb;
-            --border-color: #e5e7eb;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-
-        main {
-            flex: 1;
-        }
-
-        /* Navbar Styles */
-        .navbar {
-            background: white !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-            border: none !important;
-            padding: 12px 0;
-        }
-
-        .navbar-brand {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .navbar-brand::before {
-            content: "📇";
-            background: none;
-            -webkit-text-fill-color: unset;
-            font-size: 28px;
-        }
-
-        .nav-link {
-            color: #4b5563 !important;
-            font-weight: 500;
-            padding: 8px 16px !important;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color) !important;
-            background-color: rgba(102, 126, 234, 0.1);
-        }
-
-        .nav-link.active {
-            color: var(--primary-color) !important;
-            background-color: rgba(102, 126, 234, 0.1);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 16px;
-            right: 16px;
-            height: 2px;
-            background-color: var(--primary-color);
-            border-radius: 1px;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            transform: scaleX(1);
-        }
-
-        .navbar-toggler {
-            border: none;
-            padding: 0;
-        }
-
-        .navbar-toggler:focus {
-            box-shadow: none;
-            outline: none;
-        }
-
-        /* Container */
-        .container-main {
-            padding: 30px 0;
-            flex: 1;
-        }
-
-        /* Footer Styles */
-        footer {
-            background-color: white;
-            border-top: 1px solid var(--border-color);
-            margin-top: 60px;
-            padding: 40px 0;
-            color: #6c757d;
-        }
-
-        footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .footer-brand {
-            font-weight: 600;
-            color: #212529;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1050;
-        }
-
-        .toast {
-            background: white;
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .toast.success {
-            border-left: 4px solid var(--success-color);
-        }
-
-        .toast.error {
-            border-left: 4px solid var(--danger-color);
-        }
-
-        .toast.warning {
-            border-left: 4px solid #f59e0b;
-        }
-
-        .toast.info {
-            border-left: 4px solid var(--primary-color);
-        }
-
-        /* Responsive */
-        @@media (max-width: 768px) {
-            .navbar {
-                padding: 10px 0;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    Contact Manager Pro
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" 
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                    <ul class="navbar-nav ms-auto flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" 
-                               asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-house-door"></i> Tableau de Bord
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Contacts" ? "active" : "")" 
-                               asp-area="" asp-controller="Contacts" asp-action="Index">
-                                <i class="bi bi-person-lines-fill"></i> Contacts
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
-                                <i class="bi bi-info-circle"></i> À Propos
-                            </a>
-                        </li>
-                    </ul>
+<body class="crm-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="crm-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="logo-icon">
+                    <i class="bi bi-person-rolodex"></i>
                 </div>
+                <span class="logo-text">Contactify</span>
             </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="@Url.Action("Index", "Home")" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
+                <i class="bi bi-house-door"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="@Url.Action("Index", "Contacts")" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Contacts" ? "active" : "")">
+                <i class="bi bi-person-lines-fill"></i>
+                <span>Contacts</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="bi bi-star"></i>
+                <span>Favorites</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="bi bi-building"></i>
+                <span>Companies</span>
+            </a>
         </nav>
-    </header>
 
-    <main role="main" class="container-main">
-        <div class="container-fluid">
-            @RenderBody()
+        <div class="sidebar-footer">
+            <a href="#" class="nav-item">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
         </div>
-    </main>
+    </aside>
 
-    <footer>
-        <div class="container-fluid">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    © 2026 Contact Manager Pro
-                </div>
-                <div class="footer-links">
-                    <a asp-area="" asp-controller="Home" asp-action="Privacy">Politique de Confidentialité</a>
-                    <a href="javascript:void(0)">Conditions d'Utilisation</a>
-                    <a href="javascript:void(0)">Support</a>
+    <!-- Main Content -->
+    <div class="crm-main">
+        <!-- Top Navigation Bar -->
+        <header class="crm-header">
+            <div class="header-left">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search contacts...">
                 </div>
             </div>
-        </div>
-    </footer>
 
-    <div class="toast-container" id="toastContainer"></div>
+            <div class="header-right">
+                <button class="header-icon-btn">
+                    <i class="bi bi-bell"></i>
+                </button>
+                <div class="user-menu">
+                    <button class="user-avatar">
+                        <img src="https://via.placeholder.com/32" alt="User">
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="crm-content">
+            @RenderBody()
+        </main>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>
-        // Toast notification helper
         function showToast(message, type = 'info', duration = 3000) {
-            const toastContainer = document.getElementById('toastContainer');
-            const toastId = 'toast-' + Date.now();
-
-            const toastHtml = `
-                <div id="${toastId}" class="toast ${type}" role="alert">
-                    <div class="toast-body">
-                        ${message}
-                    </div>
-                </div>
-            `;
-
-            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
-
-            setTimeout(() => {
-                const toastEl = document.getElementById(toastId);
-                if (toastEl) toastEl.remove();
-            }, duration);
+            console.log(message, type);
         }
 
-        // Active nav link highlighting
-        function setActiveNav() {
-            const currentPath = window.location.pathname.toLowerCase();
-            document.querySelectorAll('.nav-link').forEach(link => {
-                const href = link.getAttribute('href').toLowerCase();
-                if (currentPath.includes(href) || 
-                    (href === '/' && currentPath === '/') ||
-                    (href.includes('/contacts') && currentPath.includes('/contacts'))) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                showToast('@TempData["SuccessMessage"]', 'success');
+            </text>
         }
-
-        document.addEventListener('DOMContentLoaded', setActiveNav);
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
