@@ -1,0 +1,240 @@
+<!-- Delete Confirmation Modal -->
+<style>
+	.modal-overlay {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 1000;
+		align-items: center;
+		justify-content: center;
+		animation: fadeIn 0.2s ease;
+	}
+
+	.modal-overlay.active {
+		display: flex;
+	}
+
+	.modal-content {
+		background: white;
+		border-radius: 12px;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		max-width: 500px;
+		width: 90%;
+		animation: slideUp 0.3s ease;
+		overflow: hidden;
+	}
+
+	.modal-header {
+		background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+		color: white;
+		padding: 25px 30px;
+		text-align: center;
+	}
+
+	.modal-header h3 {
+		margin: 0;
+		font-size: 22px;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+	}
+
+	.modal-header i {
+		font-size: 26px;
+	}
+
+	.modal-body {
+		padding: 30px;
+		text-align: center;
+		color: #212529;
+	}
+
+	.modal-body p {
+		margin: 0 0 10px 0;
+		font-size: 15px;
+		line-height: 1.6;
+	}
+
+	.modal-body p:last-child {
+		margin-bottom: 0;
+	}
+
+	.modal-warning {
+		background: #fef3c7;
+		border: 1px solid #fcd34d;
+		border-radius: 8px;
+		padding: 12px;
+		margin: 20px 0;
+		font-size: 13px;
+		color: #92400e;
+	}
+
+	.modal-footer {
+		padding: 20px 30px;
+		border-top: 1px solid #e5e7eb;
+		display: flex;
+		gap: 12px;
+		justify-content: flex-end;
+	}
+
+	.btn-modal {
+		padding: 10px 24px;
+		border-radius: 6px;
+		border: none;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		font-size: 14px;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.btn-confirm {
+		background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+		color: white;
+	}
+
+	.btn-confirm:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+	}
+
+	.btn-cancel {
+		background: #e5e7eb;
+		color: #4b5563;
+	}
+
+	.btn-cancel:hover {
+		background: #d1d5db;
+	}
+
+	@@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@@keyframes slideUp {
+		from {
+			transform: translateY(30px);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+
+	@@media (max-width: 768px) {
+		.modal-header {
+			padding: 20px;
+		}
+
+		.modal-header h3 {
+			font-size: 18px;
+		}
+
+		.modal-body {
+			padding: 20px;
+		}
+
+		.modal-footer {
+			padding: 15px 20px;
+			flex-direction: column-reverse;
+		}
+
+		.btn-modal {
+			width: 100%;
+			justify-content: center;
+		}
+	}
+</style>
+
+<!-- Modal HTML -->
+<div class="modal-overlay" id="deleteConfirmationModal" role="dialog" aria-labelledby="deleteModalTitle" aria-hidden="true">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 id="deleteModalTitle">
+				<i class="bi bi-exclamation-triangle"></i> Confirmer la Suppression
+			</h3>
+		</div>
+		<div class="modal-body">
+			<p>Êtes-vous certain de vouloir supprimer ce contact ?</p>
+			<p id="contactNameDisplay" style="font-weight: 600; color: #ef4444;"></p>
+			<div class="modal-warning">
+				<i class="bi bi-info-circle"></i> <strong>Attention:</strong> Cette action est irréversible.
+				Le contact sera supprimé définitivement de la base de données.
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn-modal btn-cancel" onclick="closeDeleteModal()">
+				<i class="bi bi-x-circle"></i> Annuler
+			</button>
+			<button type="button" class="btn-modal btn-confirm" onclick="confirmDelete()">
+				<i class="bi bi-trash"></i> Supprimer Définitivement
+			</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	let deleteContactId = null;
+	let deleteForm = null;
+
+	// Open delete confirmation modal
+	function openDeleteModal(contactId, contactName) {
+		deleteContactId = contactId;
+		const modal = document.getElementById('deleteConfirmationModal');
+		document.getElementById('contactNameDisplay').textContent = contactName;
+		modal.classList.add('active');
+		modal.setAttribute('aria-hidden', 'false');
+		document.body.style.overflow = 'hidden';
+	}
+
+	// Close delete confirmation modal
+	function closeDeleteModal() {
+		const modal = document.getElementById('deleteConfirmationModal');
+		modal.classList.remove('active');
+		modal.setAttribute('aria-hidden', 'true');
+		document.body.style.overflow = 'auto';
+		deleteContactId = null;
+		deleteForm = null;
+	}
+
+	// Confirm delete action
+	function confirmDelete() {
+		if (deleteContactId) {
+			// Navigate to delete endpoint
+			window.location.href = `/Contacts/Delete/${deleteContactId}`;
+		}
+	}
+
+	// Close modal on background click
+	document.addEventListener('DOMContentLoaded', function() {
+		const modal = document.getElementById('deleteConfirmationModal');
+		if (modal) {
+			modal.addEventListener('click', function(e) {
+				if (e.target === this) {
+					closeDeleteModal();
+				}
+			});
+
+			// Close on Escape key
+			document.addEventListener('keydown', function(e) {
+				if (e.key === 'Escape' && modal.classList.contains('active')) {
+					closeDeleteModal();
+				}
+			});
+		}
+	});
+</script>

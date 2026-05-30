@@ -1,0 +1,399 @@
+@model ContactManagerPro.Models.Contact
+
+@{
+    ViewData["Title"] = "Créer un Contact";
+}
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 20px;
+        border-radius: 12px 12px 0 0;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .form-header h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .form-header p {
+        margin: 8px 0 0 0;
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+    .form-section {
+        margin-bottom: 30px;
+    }
+
+    .form-section-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #667eea;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #212529;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .form-group label::after {
+        content: '';
+    }
+
+    .form-group label.required::after {
+        content: '*';
+        color: #ef4444;
+    }
+
+    .form-control {
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 12px 14px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-control::placeholder {
+        color: #9ca3af;
+    }
+
+    .text-danger {
+        color: #ef4444;
+        font-size: 12px;
+        margin-top: 4px;
+        display: block;
+    }
+
+    .validation-summary {
+        background: #fee2e2;
+        border: 1px solid #fecaca;
+        border-radius: 6px;
+        padding: 12px 14px;
+        margin-bottom: 20px;
+    }
+
+    .validation-summary ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .validation-summary li {
+        color: #dc2626;
+        font-size: 13px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group.form-check {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group.form-check label {
+        margin-bottom: 0;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        margin-top: 0;
+        margin-right: 8px;
+        cursor: pointer;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+    }
+
+    .form-check-input:checked {
+        background-color: #667eea;
+        border-color: #667eea;
+    }
+
+    .form-check-input:focus {
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-cancel {
+        background: #e5e7eb;
+        color: #4b5563;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .btn-cancel:hover {
+        background: #d1d5db;
+        color: #4b5563;
+    }
+
+    .input-group-icon {
+        position: relative;
+    }
+
+    .input-group-icon i {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        pointer-events: none;
+    }
+
+    .input-group-icon input {
+        padding-right: 40px;
+    }
+
+    @@media (max-width: 768px) {
+        .form-card {
+            padding: 20px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-submit,
+        .btn-cancel {
+            flex: unset;
+            width: 100%;
+        }
+    }
+
+    .help-text {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 4px;
+    }
+</style>
+
+<!-- Form Header -->
+<div class="form-header">
+    <h1><i class="bi bi-person-plus"></i> Créer un Nouveau Contact</h1>
+    <p>Complétez tous les champs obligatoires pour ajouter un nouveau contact</p>
+</div>
+
+<!-- Form Container -->
+<div class="form-container">
+    <div class="form-card">
+        <form asp-action="Create" method="post" novalidate>
+            <!-- Validation Summary -->
+            <div asp-validation-summary="ModelOnly" class="validation-summary">
+                <ul>
+                    <li>Veuillez corriger les erreurs ci-dessous</li>
+                </ul>
+            </div>
+
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <i class="bi bi-person-circle"></i> Informations Personnelles
+                </h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="Nom" class="control-label required">Nom</label>
+                        <input asp-for="Nom" class="form-control" placeholder="Dupont" />
+                        <span asp-validation-for="Nom" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Prenom" class="control-label required">Prénom</label>
+                        <input asp-for="Prenom" class="form-control" placeholder="Jean" />
+                        <span asp-validation-for="Prenom" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <i class="bi bi-envelope"></i> Coordonnées
+                </h3>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label required">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="jean.dupont@example.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Telephone" class="control-label">Téléphone</label>
+                    <input asp-for="Telephone" type="tel" class="form-control" placeholder="+33 6 XX XX XX XX" />
+                    <span asp-validation-for="Telephone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Adresse" class="control-label">Adresse</label>
+                    <input asp-for="Adresse" class="form-control" placeholder="123 Rue de la Paix" />
+                    <span asp-validation-for="Adresse" class="text-danger"></span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="Ville" class="control-label">Ville</label>
+                        <input asp-for="Ville" class="form-control" placeholder="Paris" />
+                        <span asp-validation-for="Ville" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Information Section -->
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <i class="bi bi-briefcase"></i> Informations Professionnelles
+                </h3>
+                <div class="form-group">
+                    <label asp-for="Entreprise" class="control-label">Entreprise</label>
+                    <input asp-for="Entreprise" class="form-control" placeholder="Acme Corporation" />
+                    <span asp-validation-for="Entreprise" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Profession" class="control-label">Profession / Titre</label>
+                    <input asp-for="Profession" class="form-control" placeholder="Directeur Commercial" />
+                    <span asp-validation-for="Profession" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Additional Information Section -->
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <i class="bi bi-plus-circle"></i> Informations Supplémentaires
+                </h3>
+                <div class="form-group">
+                    <label asp-for="PhotoUrl" class="control-label">Photo (URL)</label>
+                    <input asp-for="PhotoUrl" class="form-control" placeholder="https://example.com/photo.jpg" />
+                    <p class="help-text">Entrez l'URL complète d'une image pour le profil</p>
+                    <span asp-validation-for="PhotoUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Notes" class="control-label">Notes</label>
+                    <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Ajoutez des notes ou commentaires..."></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="Favori" id="favoriCheck" />
+                    <label class="form-check-label" for="favoriCheck">
+                        <i class="bi bi-star"></i> Ajouter aux favoris
+                    </label>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="bi bi-check-circle"></i> Créer le Contact
+                </button>
+                <a asp-action="Index" class="btn-cancel">
+                    <i class="bi bi-x-circle"></i> Annuler
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Show toast notification
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                showToast('@TempData["SuccessMessage"]', 'success');
+            </text>
+        }
+
+        // Form validation feedback
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function() {
+                    // Add loading state
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Création en cours...';
+                    }
+                });
+            }
+        });
+    </script>
+}

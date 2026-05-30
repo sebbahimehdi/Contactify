@@ -1,0 +1,396 @@
+﻿@model ContactManagerPro.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Tableau de Bord";
+}
+
+<div class="dashboard-container">
+    <!-- Hero Section -->
+    <div class="hero-section mb-5">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="bi bi-person-check"></i> Tableau de Bord
+                    </h1>
+                    <p class="lead text-muted">
+                        Bienvenue dans Contact Manager Pro - Votre solution complète de gestion de contacts professionnels
+                    </p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <a href="/Contacts/Create" class="btn btn-primary btn-lg">
+                        <i class="bi bi-plus-circle"></i> Nouveau Contact
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="container-fluid">
+        <div class="row mb-5">
+            <!-- Total Contacts Card -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="bi bi-person-fill"></i>
+                        <h6>Total Contacts</h6>
+                    </div>
+                    <div class="stat-value">@Model.TotalContacts</div>
+                    <div class="stat-footer">
+                        <a href="/Contacts" class="text-decoration-none">
+                            Voir tous <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorite Contacts Card -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="bi bi-star-fill"></i>
+                        <h6>Contacts Favoris</h6>
+                    </div>
+                    <div class="stat-value">@Model.FavoriteContacts</div>
+                    <div class="stat-footer">
+                        <span class="badge bg-warning">@Math.Round(Model.TotalContacts > 0 ? (Model.FavoriteContacts * 100.0 / Model.TotalContacts) : 0)%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Companies Card -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="bi bi-building"></i>
+                        <h6>Entreprises</h6>
+                    </div>
+                    <div class="stat-value">@Model.CompaniesCount</div>
+                    <div class="stat-footer">
+                        <span class="text-muted">Nombre unique</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cities Card -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <h6>Villes</h6>
+                    </div>
+                    <div class="stat-value">@Model.CitiesCount</div>
+                    <div class="stat-footer">
+                        <span class="text-muted">Nombre unique</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-4">
+                    <i class="bi bi-lightning-fill"></i> Actions Rapides
+                </h3>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <a href="/Contacts/Create" class="quick-action-card">
+                    <i class="bi bi-plus-lg"></i>
+                    <h5>Ajouter Contact</h5>
+                    <p>Créer un nouveau contact</p>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <a href="/Contacts?filter=favorites" class="quick-action-card">
+                    <i class="bi bi-star"></i>
+                    <h5>Favoris</h5>
+                    <p>Voir les contacts favoris</p>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <a href="/Contacts" class="quick-action-card">
+                    <i class="bi bi-list-ul"></i>
+                    <h5>Tous les Contacts</h5>
+                    <p>Consulter la liste complète</p>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <a href="/Home/Privacy" class="quick-action-card">
+                    <i class="bi bi-info-circle"></i>
+                    <h5>À Propos</h5>
+                    <p>Informations de l'application</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Contacts -->
+        @if (Model.RecentContacts.Any())
+        {
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="mb-4">
+                        <i class="bi bi-clock-history"></i> Contacts Récents
+                    </h3>
+                </div>
+
+                @foreach (var contact in Model.RecentContacts)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="recent-contact-card">
+                            <div class="contact-avatar-wrapper">
+                                <img src="@(string.IsNullOrEmpty(contact.PhotoUrl) ? "https://via.placeholder.com/80?text=" + Uri.EscapeDataString(contact.Prenom.FirstOrDefault().ToString()) : contact.PhotoUrl)"
+                                     class="contact-avatar"
+                                     alt="@contact.Prenom" />
+                                @if (contact.Favori)
+                                {
+                                    <span class="badge-favorite">
+                                        <i class="bi bi-star-fill"></i>
+                                    </span>
+                                }
+                            </div>
+                            <h5>@contact.Prenom @contact.Nom</h5>
+                            <p class="text-muted">@contact.Profession</p>
+                            <p class="small">
+                                <i class="bi bi-building"></i> @contact.Entreprise
+                            </p>
+                            <p class="small text-muted">
+                                Ajouté: @contact.DateCreation.ToString("dd/MM/yyyy")
+                            </p>
+                            <div class="action-buttons">
+                                <a href="/Contacts/Details/@contact.Id" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="/Contacts/Edit/@contact.Id" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-12">
+                    <div class="empty-state">
+                        <i class="bi bi-inbox"></i>
+                        <h4>Aucun contact encore</h4>
+                        <p>Commencez par ajouter votre premier contact</p>
+                        <a href="/Contacts/Create" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Créer un Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        padding: 40px 0;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 50px 0;
+        margin: -1rem -1rem 0 -1rem;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .stat-header i {
+        font-size: 24px;
+        color: #667eea;
+    }
+
+    .stat-header h6 {
+        margin: 0;
+        color: #6c757d;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #212529;
+        margin: 10px 0;
+    }
+
+    .stat-footer {
+        color: #667eea;
+        font-size: 13px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .quick-action-card {
+        display: block;
+        background: white;
+        border-radius: 12px;
+        padding: 30px 20px;
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .quick-action-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+    }
+
+    .quick-action-card i {
+        font-size: 32px;
+        color: #667eea;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .quick-action-card h5 {
+        margin: 15px 0 5px 0;
+        font-weight: 600;
+    }
+
+    .quick-action-card p {
+        margin: 0;
+        color: #6c757d;
+        font-size: 13px;
+    }
+
+    .recent-contact-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        text-align: center;
+        height: 100%;
+    }
+
+    .recent-contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .contact-avatar-wrapper {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+    .contact-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #667eea;
+    }
+
+    .badge-favorite {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #ffc107;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid white;
+        color: white;
+        font-size: 12px;
+    }
+
+    .recent-contact-card h5 {
+        margin: 10px 0 5px 0;
+        font-weight: 600;
+    }
+
+    .recent-contact-card p {
+        margin: 5px 0;
+        font-size: 13px;
+    }
+
+    .action-buttons {
+        margin-top: 15px;
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6c757d;
+    }
+
+    .empty-state i {
+        font-size: 64px;
+        color: #dee2e6;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .empty-state h4 {
+        margin-bottom: 10px;
+    }
+
+    .empty-state p {
+        margin-bottom: 20px;
+        font-size: 15px;
+    }
+
+    @@media (max-width: 768px) {
+        .hero-section {
+            padding: 30px 0;
+        }
+
+        .hero-section .col-lg-4 {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+        }
+
+        .contact-avatar {
+            width: 60px;
+            height: 60px;
+        }
+    }
+</style>
+
