@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Contactify</title>
+    <link rel="icon" type="image/svg+xml" href="~/images/favicon.svg" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/crm-system.css" asp-append-version="true" />
@@ -13,12 +14,10 @@
     <!-- Sidebar Navigation -->
     <aside class="crm-sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-logo">
-                <div class="logo-icon">
-                    <i class="bi bi-person-rolodex"></i>
-                </div>
+            <a href="@Url.Action("Index", "Home")" class="sidebar-logo">
+                <img src="~/images/contactify-logo.svg" alt="Contactify Logo" class="logo-image" />
                 <span class="logo-text">Contactify</span>
-            </div>
+            </a>
         </div>
 
         <nav class="sidebar-nav">

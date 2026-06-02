@@ -295,5 +295,7 @@ C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.
 C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\ref\ContactManagerPro.dll
 C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\compressed\cn5mjki0us-{0}-c5lmoqaa5j-c5lmoqaa5j.gz
 C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\ContactManagerPro.sourcelink.json
-C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\compressed\uoj41g7qjv-{0}-xh8esuprd9-xh8esuprd9.gz
-C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\compressed\2syp9b0kjd-{0}-8vwd5wavdb-8vwd5wavdb.gz
+C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\compressed\uoj41g7qjv-{0}-33lcyv7gil-33lcyv7gil.gz
+C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\compressed\m0fsozvn3l-{0}-evsvhbenje-evsvhbenje.gz
+C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\compressed\6qp6xup093-{0}-x4gqkc3w3t-x4gqkc3w3t.gz
