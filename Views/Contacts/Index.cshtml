@@ -1,4 +1,4 @@
-@model ContactManagerPro.Models.ContactIndexViewModel
+@model List<ContactManagerPro.Models.Contact>
 
 @{
 	ViewData["Title"] = "Contacts";
@@ -148,57 +148,20 @@
 <div class="page-header">
 	<h1 class="page-title">Contacts</h1>
 	<div class="page-actions">
-		<a href="@Url.Action("Create", "Contacts")" class="btn btn-primary">
+		<a asp-controller="Contacts" asp-action="Create" class="btn btn-primary">
 			<i class="bi bi-plus-lg"></i> Add Contact
 		</a>
 	</div>
 </div>
-
-<!-- Filter Bar -->
 <div class="filter-bar">
-	<form method="get" asp-action="Index">
-		<div class="filter-group">
-			<div class="form-group" style="margin-bottom: 0;">
-				<label class="form-label">Search</label>
-				<div class="search-box" style="background: transparent; border: 1px solid var(--gray-300); padding: 0 var(--spacing-md); height: 36px;">
-					<i class="bi bi-search"></i>
-					<input type="text" name="searchString" placeholder="Search by name, email, company..." 
-						   value="@Model.SearchString" class="form-control" style="border: none; padding: 0 var(--spacing-md); background: transparent;">
-				</div>
-			</div>
-
-			<div class="form-group" style="margin-bottom: 0;">
-				<label class="form-label">Sort by</label>
-				<select name="sortBy" class="form-select">
-					<option value="name" selected="@(Model.SortBy == "name")">Name (A-Z)</option>
-					<option value="name-desc" selected="@(Model.SortBy == "name-desc")">Name (Z-A)</option>
-					<option value="date-desc" selected="@(Model.SortBy == "date-desc")">Recently Added</option>
-					<option value="company" selected="@(Model.SortBy == "company")">Company</option>
-				</select>
-			</div>
-
-			<div class="form-group" style="margin-bottom: 0;">
-				<label class="form-label">Filter</label>
-				<select name="favorites" class="form-select">
-					<option value="">All Contacts</option>
-					<option value="true" selected="@(Model.IsFavoritesFilter)">Favorites Only</option>
-				</select>
-			</div>
-		</div>
-
-		<div class="filter-actions">
-			<button type="submit" class="btn btn-primary btn-sm">
-				<i class="bi bi-funnel"></i> Filter
-			</button>
-			<a href="@Url.Action("Index", "Contacts")" class="btn btn-secondary btn-sm">
-				<i class="bi bi-arrow-clockwise"></i> Reset
-			</a>
-		</div>
-	</form>
+	<input type="text"
+		   id="searchInput"
+		   class="form-control"
+		   placeholder="Search contacts, company, email, city..." />
 </div>
 
 <!-- Data Grid -->
-@if (Model.Contacts.Any())
+@if (Model.Any())
 {
 	<div class="data-grid">
 		<div class="grid-header" style="grid-template-columns: 2fr 1fr 1.5fr 1.5fr 180px;">
@@ -209,9 +172,9 @@
 			<div style="text-align: center;">Actions</div>
 		</div>
 
-		@foreach (var contact in Model.Contacts)
+		@foreach (var contact in Model)
 		{
-			<div class="grid-row" style="grid-template-columns: 2fr 1fr 1.5fr 1.5fr 180px;">
+			<div class="grid-row contact-row" style="grid-template-columns: 2fr 1fr 1.5fr 1.5fr 180px;">
 				<!-- Contact Name -->
 				<div class="contact-cell">
 					<div class="contact-avatar">
@@ -235,7 +198,7 @@
 
 				<!-- Company -->
 				<div>
-					<div class="contact-name">@(string.IsNullOrEmpty(contact.Entreprise) ? "-" : contact.Entreprise)</div>
+					<div class="contact-name">@(contact.Company?.Name ?? "-")</div>
 				</div>
 
 				<!-- Email -->
@@ -245,21 +208,19 @@
 
 				<!-- Actions -->
 				<div class="grid-actions">
-					<form method="post" asp-action="ToggleFavorite" asp-route-id="@contact.Id" style="display: inline;">
-						<button type="submit" class="favorite-btn @(contact.Favori ? "active" : "")" title="@(contact.Favori ? "Remove from favorites" : "Add to favorites")">
-							<i class="bi bi-star-fill"></i>
-						</button>
-					</form>
+					<span class="favorite-btn @(contact.Favori ? "active" : "")" title="@(contact.Favori ? "Favorite" : "Not favorite")">
+						<i class="bi bi-star-fill"></i>
+					</span>
 
-					<a href="@Url.Action("Details", "Contacts", new { id = contact.Id })" class="btn-icon-action" title="View">
+					<a asp-controller="Contacts" asp-action="Details" asp-route-id="@contact.Id" class="btn-icon-action" title="View">
 						<i class="bi bi-eye"></i>
 					</a>
 
-					<a href="@Url.Action("Edit", "Contacts", new { id = contact.Id })" class="btn-icon-action" title="Edit">
+					<a asp-controller="Contacts" asp-action="Edit" asp-route-id="@contact.Id" class="btn-icon-action" title="Edit">
 						<i class="bi bi-pencil"></i>
 					</a>
 
-					<a href="@Url.Action("Delete", "Contacts", new { id = contact.Id })" class="btn-icon-action" title="Delete" 
+					<a asp-controller="Contacts" asp-action="Delete" asp-route-id="@contact.Id" class="btn-icon-action" title="Delete" 
 					   onclick="return confirm('Are you sure?')">
 						<i class="bi bi-trash"></i>
 					</a>
@@ -275,20 +236,52 @@ else
 			<i class="bi bi-inbox"></i>
 		</div>
 		<h3 class="empty-state-title">No contacts found</h3>
-		<p class="empty-state-text">@(Model.IsFavoritesFilter ? "You don't have any favorite contacts yet." : "Start by creating your first contact.")</p>
-		<a href="@Url.Action("Create", "Contacts")" class="btn btn-primary">
+		<p class="empty-state-text">Start by creating your first contact.</p>
+		<a asp-controller="Contacts" asp-action="Create" class="btn btn-primary">
 			<i class="bi bi-plus-lg"></i> Add Contact
 		</a>
 	</div>
 }
 
+
 @section Scripts {
+
 	<script>
+
+		const searchInput = document.getElementById("searchInput");
+
+		searchInput.addEventListener("keyup", function () {
+
+			let value = this.value.toLowerCase();
+
+			let rows = document.querySelectorAll(".contact-row");
+
+
+			rows.forEach(row => {
+
+				let content = row.innerText.toLowerCase();
+
+				if(content.includes(value))
+				{
+					row.style.display = "";
+				}
+				else
+				{
+					row.style.display = "none";
+				}
+
+			});
+
+		});
+
+
 		@if (TempData["SuccessMessage"] != null)
 		{
-			<text>
-				showToast('@TempData["SuccessMessage"]', 'success');
-			</text>
+				<text>
+						showToast('@TempData["SuccessMessage"]', 'success');
+				</text>
 		}
+
 	</script>
+
 }

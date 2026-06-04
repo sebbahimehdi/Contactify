@@ -1,0 +1,263 @@
+@model List<ContactManagerPro.Models.Note>
+
+@{
+	ViewData["Title"] = "Notes";
+}
+
+<style>
+	.page-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: var(--spacing-xl);
+		gap: var(--spacing-lg);
+	}
+
+	.page-title {
+		margin: 0;
+		font-size: 28px;
+		font-weight: 600;
+		color: var(--gray-900);
+	}
+
+	.page-actions {
+		display: flex;
+		gap: var(--spacing-md);
+	}
+
+	.notes-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-lg);
+	}
+
+	.note-card {
+		background: white;
+		border: 1px solid var(--gray-200);
+		border-radius: 8px;
+		padding: var(--spacing-lg);
+		box-shadow: var(--shadow-sm);
+		transition: all var(--transition-base);
+	}
+
+	.note-card:hover {
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		border-color: var(--primary);
+	}
+
+	.note-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: start;
+		margin-bottom: var(--spacing-md);
+		gap: var(--spacing-md);
+	}
+
+	.note-title {
+		font-size: 18px;
+		font-weight: 600;
+		color: var(--gray-900);
+		margin: 0;
+	}
+
+	.note-meta {
+		font-size: 13px;
+		color: var(--gray-500);
+	}
+
+	.note-content {
+		font-size: 14px;
+		color: var(--gray-700);
+		line-height: 1.6;
+		margin-bottom: var(--spacing-md);
+		max-height: 100px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+	}
+
+	.note-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-top: var(--spacing-md);
+		border-top: 1px solid var(--gray-100);
+		font-size: 13px;
+	}
+
+	.note-contact {
+		color: var(--primary);
+		text-decoration: none;
+		font-weight: 500;
+	}
+
+	.note-contact:hover {
+		text-decoration: underline;
+	}
+
+	.note-actions {
+		display: flex;
+		gap: var(--spacing-md);
+	}
+
+	.btn-text {
+		background: none;
+		border: none;
+		color: var(--primary);
+		font-size: 13px;
+		cursor: pointer;
+		text-decoration: underline;
+		padding: 0;
+		font-weight: 500;
+	}
+
+	.btn-text.danger {
+		color: var(--danger);
+	}
+
+	.btn-text:hover {
+		text-decoration: none;
+		opacity: 0.8;
+	}
+
+	.btn-icon-sm {
+		width: 32px;
+		height: 32px;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 4px;
+		background: var(--gray-100);
+		border: none;
+		color: var(--gray-600);
+		cursor: pointer;
+		transition: all var(--transition-base);
+		font-size: 14px;
+	}
+
+	.btn-icon-sm:hover {
+		background: var(--primary);
+		color: white;
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: var(--spacing-3xl);
+		background: white;
+		border: 1px dashed var(--gray-300);
+		border-radius: 8px;
+	}
+
+	.empty-state i {
+		font-size: 48px;
+		color: var(--gray-300);
+		margin-bottom: var(--spacing-lg);
+		display: block;
+	}
+
+	.empty-state-title {
+		font-size: 18px;
+		font-weight: 600;
+		color: var(--gray-900);
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.empty-state-text {
+		font-size: 14px;
+		color: var(--gray-500);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	@@media (max-width: 768px) {
+		.page-header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.page-actions {
+			width: 100%;
+		}
+
+		.note-header {
+			flex-direction: column;
+		}
+
+		.note-footer {
+			flex-direction: column;
+			gap: var(--spacing-md);
+			align-items: flex-start;
+		}
+	}
+</style>
+
+<div class="page-header">
+	<h1 class="page-title">Notes</h1>
+	<div class="page-actions">
+		<a asp-controller="Notes" asp-action="Create" class="btn btn-primary">
+			<i class="bi bi-plus-lg"></i> Add Note
+		</a>
+	</div>
+</div>
+
+@if (Model.Any())
+{
+	<div class="notes-list">
+		@foreach (var note in Model)
+		{
+			<div class="note-card">
+				<div class="note-header">
+					<div>
+						<h3 class="note-title">@note.Title</h3>
+						<div class="note-meta">
+							<i class="bi bi-clock"></i> @note.CreatedAt.ToString("MMM d, yyyy 'at' hh:mm tt")
+						</div>
+					</div>
+					<div class="note-actions" style="display: flex; gap: var(--spacing-xs);">
+						<a asp-controller="Notes" asp-action="Edit" asp-route-id="@note.Id" class="btn-icon-sm" title="Edit">
+							<i class="bi bi-pencil"></i>
+						</a>
+						<a asp-controller="Notes" asp-action="Delete" asp-route-id="@note.Id" class="btn-icon-sm" title="Delete" onclick="return confirm('Are you sure?')">
+							<i class="bi bi-trash"></i>
+						</a>
+					</div>
+				</div>
+
+				<div class="note-content">@note.Content</div>
+
+				<div class="note-footer">
+					<a asp-controller="Contacts" asp-action="Details" asp-route-id="@note.ContactId" class="note-contact">
+						<i class="bi bi-person"></i> @note.Contact.Prenom @note.Contact.Nom
+					</a>
+					<a asp-controller="Notes" asp-action="Details" asp-route-id="@note.Id" style="color: var(--primary); text-decoration: none; font-weight: 500;">
+						View Full Note →
+					</a>
+				</div>
+			</div>
+		}
+	</div>
+}
+else
+{
+	<div class="empty-state">
+		<i class="bi bi-inbox"></i>
+		<h3 class="empty-state-title">No notes yet</h3>
+		<p class="empty-state-text">Start by creating your first note.</p>
+		<a asp-controller="Notes" asp-action="Create" class="btn btn-primary">
+			<i class="bi bi-plus-lg"></i> Add Note
+		</a>
+	</div>
+}
+
+@section Scripts {
+	<script>
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<text>
+				showToast('@TempData["SuccessMessage"]', 'success');
+			</text>
+		}
+	</script>
+}

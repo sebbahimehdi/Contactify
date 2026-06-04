@@ -1,6 +1,7 @@
 using ContactManagerPro.Data;
 using ContactManagerPro.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace ContactManagerPro.Controllers
@@ -20,8 +21,15 @@ namespace ContactManagerPro.Controllers
             {
                 TotalContacts = _context.Contacts.Count(),
                 FavoriteContacts = _context.Contacts.Count(c => c.Favori),
-                RecentContacts = _context.Contacts.OrderByDescending(c => c.DateCreation).Take(5).ToList(),
-                CompaniesCount = _context.Contacts.Select(c => c.Entreprise).Distinct().Count(),
+                RecentContacts = _context.Contacts
+                    .Include(c => c.Company)
+                    .Include(c => c.Category)
+                    .OrderByDescending(c => c.DateCreation)
+                    .Take(5)
+                    .ToList(),
+                CompaniesCount = _context.Companies.Count(),
+                CategoriesCount = _context.Categories.Count(),
+                NotesCount = _context.Notes.Count(),
                 CitiesCount = _context.Contacts.Select(c => c.Ville).Distinct().Count()
             };
 

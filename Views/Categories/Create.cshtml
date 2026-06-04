@@ -1,0 +1,135 @@
+@model ContactManagerPro.Models.Category
+
+@{
+	ViewData["Title"] = "Add Category";
+}
+
+<style>
+	.form-page {
+		max-width: 700px;
+		margin: 0 auto;
+	}
+
+	.form-page-header {
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.form-page-title {
+		font-size: 28px;
+		font-weight: 600;
+		color: var(--gray-900);
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.form-page-subtitle {
+		font-size: 14px;
+		color: var(--gray-500);
+	}
+
+	.form-card {
+		background: white;
+		border: 1px solid var(--gray-200);
+		border-radius: 8px;
+		padding: var(--spacing-2xl);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.form-section {
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.form-section:last-child {
+		margin-bottom: 0;
+	}
+
+	.form-section-title {
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--gray-600);
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		margin-bottom: var(--spacing-lg);
+		padding-bottom: var(--spacing-lg);
+		border-bottom: 1px solid var(--gray-200);
+	}
+
+	.form-group {
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.form-group.required .form-label::after {
+		content: ' *';
+		color: var(--danger);
+	}
+
+	.form-actions {
+		display: flex;
+		gap: var(--spacing-md);
+		margin-top: var(--spacing-2xl);
+		padding-top: var(--spacing-xl);
+		border-top: 1px solid var(--gray-200);
+	}
+
+	.form-actions .btn {
+		flex: 1;
+		justify-content: center;
+	}
+
+	@@media (max-width: 768px) {
+		.form-card {
+			padding: var(--spacing-lg);
+		}
+
+		.form-actions {
+			flex-direction: column;
+		}
+
+		.form-actions .btn {
+			flex: none;
+		}
+	}
+</style>
+
+<div class="form-page">
+	<div class="form-page-header">
+		<h1 class="form-page-title">Add Category</h1>
+		<p class="form-page-subtitle">Create a new category to organize your contacts.</p>
+	</div>
+
+	<div class="form-card">
+		<form asp-action="Create" method="post" novalidate>
+			<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+			<!-- Category Information -->
+			<div class="form-section">
+				<h3 class="form-section-title">Category Information</h3>
+
+				<div class="form-group required">
+					<label asp-for="Name" class="form-label"></label>
+					<input asp-for="Name" class="form-control" placeholder="Category Name" />
+					<span asp-validation-for="Name" class="form-error"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="Description" class="form-label"></label>
+					<textarea asp-for="Description" class="form-control" placeholder="Describe the purpose of this category..." rows="4"></textarea>
+					<span asp-validation-for="Description" class="form-error"></span>
+				</div>
+			</div>
+
+			<!-- Actions -->
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					<i class="bi bi-check-lg"></i> Add Category
+				</button>
+				<a asp-controller="Categories" asp-action="Index" class="btn btn-secondary">
+					<i class="bi bi-x-lg"></i> Cancel
+				</a>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

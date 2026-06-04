@@ -1,0 +1,294 @@
+@model ContactManagerPro.Models.Company
+
+@{
+	ViewData["Title"] = Model.Name;
+}
+
+<style>
+	.details-page {
+		max-width: 1000px;
+		margin: 0 auto;
+	}
+
+	.details-header {
+		background: white;
+		border: 1px solid var(--gray-200);
+		border-radius: 8px;
+		padding: var(--spacing-2xl);
+		margin-bottom: var(--spacing-2xl);
+		box-shadow: var(--shadow-sm);
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: var(--spacing-2xl);
+		align-items: start;
+	}
+
+	.details-icon {
+		width: 100px;
+		height: 100px;
+		background: linear-gradient(135deg, var(--primary), var(--secondary));
+		color: white;
+		border-radius: 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 48px;
+	}
+
+	.details-info h1 {
+		font-size: 28px;
+		font-weight: 600;
+		color: var(--gray-900);
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.details-info p {
+		font-size: 14px;
+		color: var(--gray-500);
+		margin: 0;
+	}
+
+	.details-actions {
+		display: flex;
+		gap: var(--spacing-md);
+		flex-direction: column;
+	}
+
+	.details-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+		gap: var(--spacing-lg);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.details-card {
+		background: white;
+		border: 1px solid var(--gray-200);
+		border-radius: 8px;
+		padding: var(--spacing-lg);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.details-card h3 {
+		font-size: 14px;
+		font-weight: 600;
+		text-transform: uppercase;
+		color: var(--gray-600);
+		margin-bottom: var(--spacing-lg);
+		padding-bottom: var(--spacing-lg);
+		border-bottom: 1px solid var(--gray-200);
+	}
+
+	.detail-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: start;
+		margin-bottom: var(--spacing-md);
+		padding-bottom: var(--spacing-md);
+		border-bottom: 1px solid var(--gray-100);
+	}
+
+	.detail-item:last-child {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		border-bottom: none;
+	}
+
+	.detail-label {
+		font-size: 13px;
+		color: var(--gray-500);
+		font-weight: 500;
+	}
+
+	.detail-value {
+		font-size: 14px;
+		color: var(--gray-900);
+		font-weight: 600;
+	}
+
+	.detail-value.empty {
+		color: var(--gray-400);
+		font-style: italic;
+	}
+
+	.contacts-section {
+		background: white;
+		border: 1px solid var(--gray-200);
+		border-radius: 8px;
+		padding: var(--spacing-lg);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.contacts-header {
+		font-size: 14px;
+		font-weight: 600;
+		text-transform: uppercase;
+		color: var(--gray-600);
+		margin-bottom: var(--spacing-lg);
+		padding-bottom: var(--spacing-lg);
+		border-bottom: 1px solid var(--gray-200);
+	}
+
+	.contact-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: var(--spacing-md);
+		border-bottom: 1px solid var(--gray-100);
+	}
+
+	.contact-row:last-child {
+		border-bottom: none;
+	}
+
+	.contact-name {
+		font-weight: 600;
+		color: var(--gray-900);
+	}
+
+	.contact-email {
+		font-size: 13px;
+		color: var(--gray-500);
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: var(--spacing-2xl);
+		color: var(--gray-400);
+	}
+
+	.empty-state i {
+		font-size: 32px;
+		margin-bottom: var(--spacing-md);
+		display: block;
+	}
+
+	@@media (max-width: 768px) {
+		.details-header {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-lg);
+		}
+
+		.details-actions {
+			flex-direction: row;
+		}
+
+		.details-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<div class="details-page">
+	<!-- Header -->
+	<div class="details-header">
+		<div class="details-icon">
+			<i class="bi bi-building"></i>
+		</div>
+		<div class="details-info">
+			<h1>@Model.Name</h1>
+			@if (!string.IsNullOrEmpty(Model.Industry))
+			{
+				<p>@Model.Industry</p>
+			}
+			@if (!string.IsNullOrEmpty(Model.Address))
+			{
+				<p><i class="bi bi-geo-alt"></i> @Model.Address</p>
+			}
+		</div>
+		<div class="details-actions">
+			<a asp-controller="Companies" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+				<i class="bi bi-pencil"></i> Edit
+			</a>
+			<a asp-controller="Companies" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+				<i class="bi bi-trash"></i> Delete
+			</a>
+			<a asp-controller="Companies" asp-action="Index" class="btn btn-secondary">
+				<i class="bi bi-arrow-left"></i> Back
+			</a>
+		</div>
+	</div>
+
+	<!-- Details -->
+	<div class="details-grid">
+		<div class="details-card">
+			<h3>Company Information</h3>
+			<div class="detail-item">
+				<span class="detail-label">Name</span>
+				<span class="detail-value">@Model.Name</span>
+			</div>
+			<div class="detail-item">
+				<span class="detail-label">Industry</span>
+				<span class="detail-value @(string.IsNullOrEmpty(Model.Industry) ? "empty" : "")">
+					@(string.IsNullOrEmpty(Model.Industry) ? "Not provided" : Model.Industry)
+				</span>
+			</div>
+			<div class="detail-item">
+				<span class="detail-label">Website</span>
+				@if (!string.IsNullOrEmpty(Model.Website))
+				{
+					<a href="@Model.Website" target="_blank" class="detail-value">Visit</a>
+				}
+				else
+				{
+					<span class="detail-value empty">Not provided</span>
+				}
+			</div>
+			<div class="detail-item">
+				<span class="detail-label">Address</span>
+				<span class="detail-value @(string.IsNullOrEmpty(Model.Address) ? "empty" : "")">
+					@(string.IsNullOrEmpty(Model.Address) ? "Not provided" : Model.Address)
+				</span>
+			</div>
+			<div class="detail-item">
+				<span class="detail-label">Created</span>
+				<span class="detail-value">@Model.CreatedAt.ToString("MMM d, yyyy")</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- Related Contacts -->
+	<div class="contacts-section">
+		<div class="contacts-header">Related Contacts (@Model.Contacts.Count)</div>
+
+		@if (Model.Contacts.Any())
+		{
+			@foreach (var contact in Model.Contacts.OrderBy(c => c.Nom).ThenBy(c => c.Prenom))
+			{
+				<div class="contact-row">
+					<div>
+						<div class="contact-name">
+							<a asp-controller="Contacts" asp-action="Details" asp-route-id="@contact.Id">
+								@contact.Prenom @contact.Nom
+							</a>
+						</div>
+						<div class="contact-email">@contact.Email</div>
+					</div>
+					<div>
+						<a asp-controller="Contacts" asp-action="Details" asp-route-id="@contact.Id" class="btn btn-sm btn-primary">
+							View
+						</a>
+					</div>
+				</div>
+			}
+		}
+		else
+		{
+			<div class="empty-state">
+				<i class="bi bi-inbox"></i>
+				<p>No contacts associated with this company yet.</p>
+			</div>
+		}
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<text>
+				showToast('@TempData["SuccessMessage"]', 'success');
+			</text>
+		}
+	</script>
+}

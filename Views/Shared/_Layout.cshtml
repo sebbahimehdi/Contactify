@@ -14,28 +14,36 @@
     <!-- Sidebar Navigation -->
     <aside class="crm-sidebar">
         <div class="sidebar-header">
-            <a href="@Url.Action("Index", "Home")" class="sidebar-logo">
+            <a asp-controller="Home" asp-action="Index" class="sidebar-logo">
                 <img src="~/images/contactify-logo.svg" alt="Contactify Logo" class="logo-image" />
                 <span class="logo-text">Contactify</span>
             </a>
         </div>
 
         <nav class="sidebar-nav">
-            <a href="@Url.Action("Index", "Home")" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
+            <a asp-controller="Home" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
                 <i class="bi bi-house-door"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="@Url.Action("Index", "Contacts")" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Contacts" ? "active" : "")">
+            <a asp-controller="Contacts" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Contacts" && ViewContext.RouteData.Values["Action"]?.ToString() != "Favorites" ? "active" : "")">
                 <i class="bi bi-person-lines-fill"></i>
                 <span>Contacts</span>
             </a>
-            <a href="#" class="nav-item">
+            <a asp-controller="Contacts" asp-action="Favorites" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Favorites" ? "active" : "")">
                 <i class="bi bi-star"></i>
                 <span>Favorites</span>
             </a>
-            <a href="#" class="nav-item">
+            <a asp-controller="Companies" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Companies" ? "active" : "")">
                 <i class="bi bi-building"></i>
                 <span>Companies</span>
+            </a>
+            <a asp-controller="Categories" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Categories" ? "active" : "")">
+                <i class="bi bi-tag"></i>
+                <span>Categories</span>
+            </a>
+            <a asp-controller="Notes" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Notes" ? "active" : "")">
+                <i class="bi bi-sticky"></i>
+                <span>Notes</span>
             </a>
         </nav>
 
@@ -51,23 +59,6 @@
     <div class="crm-main">
         <!-- Top Navigation Bar -->
         <header class="crm-header">
-            <div class="header-left">
-                <div class="search-box">
-                    <i class="bi bi-search"></i>
-                    <input type="text" placeholder="Search contacts...">
-                </div>
-            </div>
-
-            <div class="header-right">
-                <button class="header-icon-btn">
-                    <i class="bi bi-bell"></i>
-                </button>
-                <div class="user-menu">
-                    <button class="user-avatar">
-                        <img src="https://via.placeholder.com/32" alt="User">
-                    </button>
-                </div>
-            </div>
         </header>
 
         <!-- Page Content -->

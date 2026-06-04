@@ -175,6 +175,38 @@
     <div class="kpi-card">
         <div class="kpi-header">
             <div>
+                <div class="kpi-label">Categories</div>
+                <div class="kpi-value">@Model.CategoriesCount</div>
+            </div>
+            <div class="kpi-icon primary">
+                <i class="bi bi-tag"></i>
+            </div>
+        </div>
+        <div class="kpi-change positive">
+            <i class="bi bi-arrow-up-short"></i>
+            <span>Contact organization</span>
+        </div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Notes</div>
+                <div class="kpi-value">@Model.NotesCount</div>
+            </div>
+            <div class="kpi-icon primary">
+                <i class="bi bi-sticky"></i>
+            </div>
+        </div>
+        <div class="kpi-change positive">
+            <i class="bi bi-arrow-up-short"></i>
+            <span>Activity tracked</span>
+        </div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-header">
+            <div>
                 <div class="kpi-label">Cities</div>
                 <div class="kpi-value">@Model.CitiesCount</div>
             </div>
@@ -202,13 +234,15 @@
                 </div>
                 <div class="activity-content">
                     <div class="activity-title">
-                        @contact.Prenom @contact.Nom
+                        <a asp-controller="Contacts" asp-action="Details" asp-route-id="@contact.Id" style="color: var(--primary); text-decoration: none;">
+                            @contact.Prenom @contact.Nom
+                        </a>
                         <span style="font-weight: 400; color: var(--gray-500);">was added</span>
                     </div>
                     <div class="activity-description">
-                        @if (!string.IsNullOrEmpty(contact.Entreprise))
+                        @if (contact.Company != null)
                         {
-                            <span>@contact.Entreprise</span>
+                            <span>@contact.Company.Name</span>
                         }
                         @if (!string.IsNullOrEmpty(contact.Profession))
                         {
@@ -231,7 +265,7 @@ else
         </div>
         <h3 class="empty-state-title">No contacts yet</h3>
         <p class="empty-state-text">Start by creating your first contact to get started.</p>
-        <a href="@Url.Action("Create", "Contacts")" class="btn btn-primary">
+        <a asp-controller="Contacts" asp-action="Create" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Add Contact
         </a>
     </div>

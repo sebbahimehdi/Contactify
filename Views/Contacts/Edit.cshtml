@@ -156,9 +156,37 @@
                 <h3 class="form-section-title">Professional Information</h3>
 
                 <div class="form-group">
-                    <label asp-for="Entreprise" class="form-label">Company</label>
-                    <input asp-for="Entreprise" class="form-control" />
-                    <span asp-validation-for="Entreprise" class="form-error"></span>
+                    <label for="CompanyId" class="form-label">Company</label>
+                    <select id="CompanyId" name="CompanyId" class="form-control">
+                        <option value="">-- Select a company --</option>
+                        @{
+                            var companies = ViewData["Companies"] as List<ContactManagerPro.Models.Company>;
+                            if (companies != null)
+                            {
+                                @foreach (var company in companies)
+                                {
+                                    <option value="@company.Id" selected="@(Model?.CompanyId == company.Id)">@company.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="CategoryId" class="form-label">Category</label>
+                    <select id="CategoryId" name="CategoryId" class="form-control">
+                        <option value="">-- Select a category --</option>
+                        @{
+                            var categories = ViewData["Categories"] as List<ContactManagerPro.Models.Category>;
+                            if (categories != null)
+                            {
+                                @foreach (var category in categories)
+                                {
+                                    <option value="@category.Id" selected="@(Model?.CategoryId == category.Id)">@category.Name</option>
+                                }
+                            }
+                        }
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -171,12 +199,6 @@
             <!-- Additional Information -->
             <div class="form-section">
                 <h3 class="form-section-title">Additional Information</h3>
-
-                <div class="form-group">
-                    <label asp-for="Notes" class="form-label">Notes</label>
-                    <textarea asp-for="Notes" class="form-control"></textarea>
-                    <span asp-validation-for="Notes" class="form-error"></span>
-                </div>
 
                 <div class="form-group">
                     <label asp-for="PhotoUrl" class="form-label">Photo URL</label>

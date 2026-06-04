@@ -1,0 +1,273 @@
+@model List<ContactManagerPro.Models.Company>
+
+@{
+	ViewData["Title"] = "Companies";
+}
+
+<style>
+	.page-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: var(--spacing-xl);
+		gap: var(--spacing-lg);
+	}
+
+	.page-title {
+		margin: 0;
+		font-size: 28px;
+		font-weight: 600;
+		color: var(--gray-900);
+	}
+
+	.page-actions {
+		display: flex;
+		gap: var(--spacing-md);
+	}
+
+	.companies-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+		gap: var(--spacing-lg);
+	}
+
+	.company-card {
+		background: white;
+		border: 1px solid var(--gray-200);
+		border-radius: 8px;
+		padding: var(--spacing-lg);
+		box-shadow: var(--shadow-sm);
+		transition: all var(--transition-base);
+	}
+
+	.company-card:hover {
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		border-color: var(--primary);
+	}
+
+	.company-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: start;
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.company-icon {
+		width: 48px;
+		height: 48px;
+		background: linear-gradient(135deg, var(--primary), var(--secondary));
+		color: white;
+		border-radius: 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 24px;
+	}
+
+	.company-actions {
+		display: flex;
+		gap: var(--spacing-xs);
+	}
+
+	.btn-icon-sm {
+		width: 32px;
+		height: 32px;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 4px;
+		background: var(--gray-100);
+		border: none;
+		color: var(--gray-600);
+		cursor: pointer;
+		transition: all var(--transition-base);
+		font-size: 14px;
+	}
+
+	.btn-icon-sm:hover {
+		background: var(--primary);
+		color: white;
+	}
+
+	.company-name {
+		font-size: 18px;
+		font-weight: 600;
+		color: var(--gray-900);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.company-industry {
+		font-size: 13px;
+		color: var(--gray-500);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.company-info {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.company-info-item {
+		display: flex;
+		align-items: start;
+		gap: var(--spacing-md);
+		font-size: 13px;
+	}
+
+	.company-info-item i {
+		color: var(--primary);
+		margin-top: 2px;
+		flex-shrink: 0;
+	}
+
+	.company-info-text {
+		color: var(--gray-600);
+		word-break: break-word;
+	}
+
+	.company-contacts {
+		padding-top: var(--spacing-lg);
+		border-top: 1px solid var(--gray-200);
+		font-size: 13px;
+		color: var(--gray-500);
+	}
+
+	.contact-badge {
+		display: inline-block;
+		background: var(--info-light);
+		color: var(--info);
+		padding: 0.25rem 0.75rem;
+		border-radius: 12px;
+		font-weight: 600;
+		margin-left: var(--spacing-xs);
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: var(--spacing-3xl);
+		background: white;
+		border: 1px dashed var(--gray-300);
+		border-radius: 8px;
+	}
+
+	.empty-state i {
+		font-size: 48px;
+		color: var(--gray-300);
+		margin-bottom: var(--spacing-lg);
+		display: block;
+	}
+
+	.empty-state-title {
+		font-size: 18px;
+		font-weight: 600;
+		color: var(--gray-900);
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.empty-state-text {
+		font-size: 14px;
+		color: var(--gray-500);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	@@media (max-width: 768px) {
+		.page-header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.page-actions {
+			width: 100%;
+		}
+
+		.companies-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<div class="page-header">
+	<h1 class="page-title">Companies</h1>
+	<div class="page-actions">
+		<a asp-controller="Companies" asp-action="Create" class="btn btn-primary">
+			<i class="bi bi-plus-lg"></i> Add Company
+		</a>
+	</div>
+</div>
+
+@if (Model.Any())
+{
+	<div class="companies-grid">
+		@foreach (var company in Model)
+		{
+			<div class="company-card">
+				<div class="company-header">
+					<div class="company-icon">
+						<i class="bi bi-building"></i>
+					</div>
+					<div class="company-actions">
+						<a asp-controller="Companies" asp-action="Edit" asp-route-id="@company.Id" class="btn-icon-sm" title="Edit">
+							<i class="bi bi-pencil"></i>
+						</a>
+						<a asp-controller="Companies" asp-action="Delete" asp-route-id="@company.Id" class="btn-icon-sm" title="Delete" onclick="return confirm('Are you sure?')">
+							<i class="bi bi-trash"></i>
+						</a>
+					</div>
+				</div>
+				<a asp-controller="Companies" asp-action="Details" asp-route-id="@company.Id" class="company-name">
+					@company.Name
+				</a>
+				@if (!string.IsNullOrEmpty(company.Industry))
+				{
+					<div class="company-industry">@company.Industry</div>
+				}
+
+				<div class="company-info">
+					@if (!string.IsNullOrEmpty(company.Website))
+					{
+						<div class="company-info-item">
+							<i class="bi bi-globe"></i>
+							<a href="@company.Website" target="_blank" class="company-info-text">Visit Website</a>
+						</div>
+					}
+					@if (!string.IsNullOrEmpty(company.Address))
+					{
+						<div class="company-info-item">
+							<i class="bi bi-geo-alt"></i>
+							<span class="company-info-text">@company.Address</span>
+						</div>
+					}
+				</div>
+
+				<div class="company-contacts">
+					Contacts: <span class="contact-badge">@company.Contacts.Count</span>
+				</div>
+			</div>
+		}
+	</div>
+}
+else
+{
+	<div class="empty-state">
+		<i class="bi bi-inbox"></i>
+		<h3 class="empty-state-title">No companies yet</h3>
+		<p class="empty-state-text">Start by creating your first company.</p>
+		<a asp-controller="Companies" asp-action="Create" class="btn btn-primary">
+			<i class="bi bi-plus-lg"></i> Add Company
+		</a>
+	</div>
+}
+
+@section Scripts {
+	<script>
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<text>
+				showToast('@TempData["SuccessMessage"]', 'success');
+			</text>
+		}
+	</script>
+}

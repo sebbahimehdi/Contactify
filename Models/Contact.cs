@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ContactManagerPro.Models
 {
@@ -27,9 +28,6 @@ namespace ContactManagerPro.Models
         public string Adresse { get; set; }
 
         [StringLength(100)]
-        public string Entreprise { get; set; }
-
-        [StringLength(100)]
         public string Profession { get; set; }
 
         [StringLength(100)]
@@ -38,12 +36,22 @@ namespace ContactManagerPro.Models
         [StringLength(500)]
         public string PhotoUrl { get; set; }
 
-        [StringLength(1000)]
-        public string Notes { get; set; }
-
         public bool Favori { get; set; }
 
         [Display(Name = "Date de création")]
         public DateTime DateCreation { get; set; } = DateTime.Now;
+
+        // Foreign keys
+        [ForeignKey("Company")]
+        public int? CompanyId { get; set; }
+
+        [ForeignKey("Category")]
+        public int? CategoryId { get; set; }
+
+        // Navigation properties
+        public Company? Company { get; set; }
+
+        public Category? Category { get; set; }
+        public ICollection<Note> Notes { get; set; } = new List<Note>();
     }
 }

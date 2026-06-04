@@ -1,0 +1,158 @@
+@model ContactManagerPro.Models.Note
+
+@{
+	ViewData["Title"] = Model.Title;
+}
+
+<style>
+	.details-page {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.note-card {
+		background: white;
+		border: 1px solid var(--gray-200);
+		border-radius: 8px;
+		padding: var(--spacing-2xl);
+		box-shadow: var(--shadow-sm);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.note-header {
+		margin-bottom: var(--spacing-2xl);
+		padding-bottom: var(--spacing-lg);
+		border-bottom: 1px solid var(--gray-200);
+	}
+
+	.note-title {
+		font-size: 28px;
+		font-weight: 600;
+		color: var(--gray-900);
+		margin: 0 0 var(--spacing-md) 0;
+	}
+
+	.note-meta {
+		display: flex;
+		gap: var(--spacing-lg);
+		font-size: 13px;
+		color: var(--gray-500);
+	}
+
+	.note-content {
+		font-size: 16px;
+		color: var(--gray-700);
+		line-height: 1.8;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.contact-info {
+		background: var(--info-light);
+		border: 1px solid rgba(102, 126, 234, 0.2);
+		border-radius: 8px;
+		padding: var(--spacing-lg);
+		margin-bottom: var(--spacing-lg);
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-md);
+	}
+
+	.contact-info i {
+		font-size: 24px;
+		color: var(--primary);
+	}
+
+	.contact-details h3 {
+		margin: 0 0 var(--spacing-xs) 0;
+		color: var(--gray-900);
+		font-size: 16px;
+	}
+
+	.contact-details p {
+		margin: 0;
+		color: var(--gray-600);
+		font-size: 13px;
+	}
+
+	.note-actions {
+		display: flex;
+		gap: var(--spacing-md);
+		margin-top: var(--spacing-lg);
+		padding-top: var(--spacing-lg);
+		border-top: 1px solid var(--gray-200);
+	}
+
+	.note-actions .btn {
+		flex: 1;
+		justify-content: center;
+	}
+
+	@@media (max-width: 768px) {
+		.note-card {
+			padding: var(--spacing-lg);
+		}
+
+		.note-actions {
+			flex-direction: column;
+		}
+
+		.note-actions .btn {
+			flex: none;
+		}
+
+		.contact-info {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>
+
+<div class="details-page">
+	<div class="note-card">
+		<div class="note-header">
+			<h1 class="note-title">@Model.Title</h1>
+			<div class="note-meta">
+				<span><i class="bi bi-clock"></i> @Model.CreatedAt.ToString("MMM d, yyyy 'at' hh:mm tt")</span>
+			</div>
+		</div>
+
+		<div class="contact-info">
+			<i class="bi bi-person-circle"></i>
+			<div class="contact-details">
+				<h3>
+					<a asp-controller="Contacts" asp-action="Details" asp-route-id="@Model.Contact.Id" style="color: var(--primary); text-decoration: none;">
+						@Model.Contact.Prenom @Model.Contact.Nom
+					</a>
+				</h3>
+				<p>@Model.Contact.Email</p>
+			</div>
+		</div>
+
+		<div class="note-content">@Model.Content</div>
+
+		<div class="note-actions">
+			<a asp-controller="Notes" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+				<i class="bi bi-pencil"></i> Edit
+			</a>
+			<a asp-controller="Notes" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+				<i class="bi bi-trash"></i> Delete
+			</a>
+			<a asp-controller="Contacts" asp-action="Details" asp-route-id="@Model.ContactId" class="btn btn-secondary">
+				<i class="bi bi-arrow-left"></i> Back to Contact
+			</a>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<text>
+				showToast('@TempData["SuccessMessage"]', 'success');
+			</text>
+		}
+	</script>
+}
