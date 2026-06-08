@@ -299,3 +299,4 @@ C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.
 C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\ContactManagerPro.pdb
 C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\ContactManagerPro.genruntimeconfig.cache
 C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\ref\ContactManagerPro.dll
+C:\Users\jikam\source\repos\ContactManagerPro\ContactManagerPro\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

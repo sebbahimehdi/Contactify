@@ -77,7 +77,7 @@
 			<small style="color: var(--gray-500);">@Model.Email</small>
 		</div>
 		<div class="delete-actions">
-			<form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+			<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
 				<button type="submit" class="btn btn-danger">
 					<i class="bi bi-trash"></i> Delete
 				</button>

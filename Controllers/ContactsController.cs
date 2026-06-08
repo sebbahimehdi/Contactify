@@ -76,13 +76,106 @@ namespace ContactManagerPro.Controllers
 
             return View("Index", contacts);
         }
-        public async Task<IActionResult> Delete(int id)
+       
+
+        // GET: Contacts/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var contact = await _context.Contacts.FindAsync(id);
+
+            if (contact == null)
+                return NotFound();
+
+
+            ViewData["Companies"] = _context.Companies.ToList();
+            ViewData["Categories"] = _context.Categories.ToList();
+
+            return View(contact);
+        }
+
+
+
+        // POST: Contacts/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Contact contact)
+        {
+            if (id != contact.Id)
+                return NotFound();
+
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["Companies"] = _context.Companies.ToList();
+                ViewData["Categories"] = _context.Categories.ToList();
+
+                return View(contact);
+            }
+
+
+            contact.DateCreation = DateTime.Now;
+
+            _context.Update(contact);
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+        // GET: Contacts/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+
+            var contact = await _context.Contacts
+                .Include(c => c.Company)
+                .Include(c => c.Category)
+                .Include(c => c.Notes)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+
+            if (contact == null)
+                return NotFound();
+
+
+            return View(contact);
+        }
+
+
+
+        // GET: Contacts/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+
+            var contact = await _context.Contacts
+                .Include(c => c.Company)
+                .Include(c => c.Category)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+
+            if (contact == null)
+                return NotFound();
+
+
+            return View(contact);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var contact = await _context.Contacts.FindAsync(id);
 
             if (contact != null)
             {
-                _context.Remove(contact);
+                _context.Contacts.Remove(contact);
                 await _context.SaveChangesAsync();
             }
 
